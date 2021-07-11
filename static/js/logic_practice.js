@@ -9,22 +9,28 @@ var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{
 // Initialize all of the LayerGroups we'll be using
 var layers = {
   Small: new L.LayerGroup(),
-  EMPTY: new L.LayerGroup(),
-  LOW: new L.LayerGroup(),
+  Medium: new L.LayerGroup(),
+  Large: new L.LayerGroup(),
   XLarge: new L.LayerGroup(),
-  OUT_OF_ORDER: new L.LayerGroup()
+  Baby: new L.LayerGroup() 
+  //Young: new L.LayerGroup(),
+  //Adult: new L.LayerGroup(),
+  //Senior: new L.LayerGroup()
 };
 
 // Create the map with our layers
 var map = L.map("map-id", {
-  center: [40.73, -74.0059],
-  zoom: 12,
+  center: [37.0902, -95.7129],
+  zoom: 5,
   layers: [
     layers.Small,
-    layers.EMPTY,
-    layers.LOW,
+    layers.Medium,
+    layers.Large,
     layers.XLarge,
-    layers.OUT_OF_ORDER
+    layers.Baby
+    //layers.Young,
+    //layers.Adult,
+    //layers.Senior
   ]
 });
 
@@ -33,11 +39,14 @@ lightmap.addTo(map);
 
 // Create an overlays object to add to the layer control
 var overlays = {
-  "Small": layers.Small,
-  "Empty Stations": layers.EMPTY,
-  "Low Stations": layers.LOW,
-  "Healthy Stations": layers.XLarge,
-  "Out of Order": layers.OUT_OF_ORDER
+  "Small 2-22 pounds": layers.Small,
+  "Medium 24-57 pounds": layers.Medium,
+  "Large 59-99 pounds": layers.Large,
+  "XLarge 100 pounds": layers.XLarge,
+  "Baby < 1 year": layers.Baby, 
+  "Young 1-2 years": layers.Young,
+  "Adult 2-6 years": layers.Adult,
+  "Senior 6+ years": layers.Senior, 
 };
 
 // Create a control for our layers, add our overlay layers to it
@@ -59,40 +68,59 @@ info.addTo(map);
 // Initialize an object containing icons for each layer group
 var icons = {
   Small: L.ExtraMarkers.icon({
-    icon: "ion-ios-paw",
+    icon: "ion-settings",
     iconColor: "white",
     markerColor: "yellow",
     shape: "star"
   }),
-  EMPTY: L.ExtraMarkers.icon({
+  Medium: L.ExtraMarkers.icon({
     icon: "ion-android-bicycle",
     iconColor: "white",
     markerColor: "red",
     shape: "circle"
   }),
-  OUT_OF_ORDER: L.ExtraMarkers.icon({
+  Large: L.ExtraMarkers.icon({
     icon: "ion-minus-circled",
     iconColor: "white",
     markerColor: "blue-dark",
     shape: "penta"
   }),
-  LOW: L.ExtraMarkers.icon({
+  XLarge: L.ExtraMarkers.icon({
     icon: "ion-android-bicycle",
     iconColor: "white",
     markerColor: "orange",
     shape: "circle"
   }),
-  XLarge: L.ExtraMarkers.icon({
-    icon: "ion-ios-paw",
-    iconColor: "black",
-    markerColor: "blue",
-    shape: "square"
+  Baby: L.ExtraMarkers.icon({
+    icon: "ion-md-paw",
+    iconColor: "white",
+    markerColor: "green",
+    shape: "circle"
+  }),
+  Young: L.ExtraMarkers.icon({
+    icon: "ion-minus-circled",
+    iconColor: "white",
+    markerColor: "blue-dark",
+    shape: "penta"
+  }),
+  Adult: L.ExtraMarkers.icon({
+    icon: "ion-android-bicycle",
+    iconColor: "white",
+    markerColor: "orange",
+    shape: "circle"
+  }),
+  Senior: L.ExtraMarkers.icon({
+    icon: "ion-android-bicycle",
+    iconColor: "white",
+    markerColor: "green",
+    shape: "circle"
   })
 };
 
 // Perform an API call to the Citi Bike Station Information endpoint
+// Read in csv for locations of the pet
+//d3.csv("../data.csv", function(infoRes) {
 d3.json("https://gbfs.citibikenyc.com/gbfs/en/station_information.json", function(infoRes) {
-
   // When the first API call is complete, perform another call to the Citi Bike Station Status endpoint
   d3.json("https://gbfs.citibikenyc.com/gbfs/en/station_status.json", function(statusRes) {
     var updatedAt = infoRes.last_updated;
@@ -101,10 +129,10 @@ d3.json("https://gbfs.citibikenyc.com/gbfs/en/station_information.json", functio
 
     // Create an object to keep of the number of markers in each layer
     var stationCount = {
-      Small: 0,
+      COMING_SOON: 0,
       EMPTY: 0,
       LOW: 0,
-      XLarge: 0,
+      NORMAL: 0,
       OUT_OF_ORDER: 0
     };
 
@@ -116,9 +144,9 @@ d3.json("https://gbfs.citibikenyc.com/gbfs/en/station_information.json", functio
 
       // Create a new station object with properties of both station objects
       var station = Object.assign({}, stationInfo[i], stationStatus[i]);
-      // If a station is listed but not installed, it's Small
+      // If a station is listed but not installed, it's coming soon
       if (!station.is_installed) {
-        stationStatusCode = "Small";
+        stationStatusCode = "COMING_SOON";
       }
       // If a station has no bikes available, it's empty
       else if (!station.num_bikes_available) {
@@ -134,7 +162,7 @@ d3.json("https://gbfs.citibikenyc.com/gbfs/en/station_information.json", functio
       }
       // Otherwise the station is normal
       else {
-        stationStatusCode = "XLarge";
+        stationStatusCode = "NORMAL";
       }
 
       // Update the station count
@@ -161,9 +189,9 @@ function updateLegend(time, stationCount) {
   document.querySelector(".legend").innerHTML = [
     "<p>Updated: " + moment.unix(time).format("h:mm:ss A") + "</p>",
     "<p class='out-of-order'>Out of Order Stations: " + stationCount.OUT_OF_ORDER + "</p>",
-    "<p class='coming-soon'>Small Dogs: " + stationCount.Small + "</p>",
+    "<p class='coming-soon'>Stations Coming Soon: " + stationCount.COMING_SOON + "</p>",
     "<p class='empty'>Empty Stations: " + stationCount.EMPTY + "</p>",
     "<p class='low'>Low Stations: " + stationCount.LOW + "</p>",
-    "<p class='xl'>XLarge Dogs: " + stationCount.XLarge + "</p>"
+    "<p class='healthy'>Healthy Stations: " + stationCount.NORMAL + "</p>"
   ].join("");
 }
