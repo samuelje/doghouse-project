@@ -6,6 +6,12 @@ var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{
   accessToken: API_KEY
 });
 
+var map = L.map("map-id", {
+  center: [40.73, -74.0059],
+  zoom: 12,
+  
+});
+
 // Add our 'lightmap' tile layer to the map
 lightmap.addTo(map);
 
@@ -15,13 +21,15 @@ d3.csv("cities.csv").then(function(cities) {
   var lon = cities.longitude;
   console.log(name);
 
-var marker = L.marker([lat, lon], {
-  draggable: true,
-  title: "My First Marker"
-}).addTo(myMap);
+// Loop through the cities array and create one marker for each city, bind a popup containing its name and population add it to the map
+  for (var i = 0; i < cities.length; i++) {
+    var city = cities[i];
+    L.marker(lat, lon)
+      .bindPopup("<h1>" + name + "</h1> <hr> <h3>holder " + lon + "</h3>")
+      .addTo(myMap);
 
-// Binding a pop-up to our marker
-marker.bindPopup("Hello There!");
+  }
+    
 
 
 });
