@@ -20,16 +20,34 @@ var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{
   var map = L.map("map-id", {
     center: [39.7392, -104.9903],
     zoom: 12,
-    layers: lightmap
+    layers: [lightmap, adoptableDoggos]
   });
 
   L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
   }).addTo(map);
 }
-  L.geoJSON(geojson).bindPopup(function (layer) {
-    return layer.feature.properties.name;
-}).addTo(map);
-createMarkers();
 
+function createMarkers() {
+var locs = geojson.features 
+  // Initialize an array to hold bike markers
+  var doggos = [];
+
+  // Loop through the stations array
+  for (var index = 0; index < locs.length; index++) {
+    var coords = locs[index];
+    // For each station, create a marker and bind a popup with the station's name
+    var doggoMarker = L.marker([coords.properties.Latitude, coords.properties.Longitude] )
+      .bindPopup("<h3>" + coords.properties.name + "<h4>"+coords.properties.breeds_primary +"<h4>"+coords.properties.url );
+
+    // Add the marker to the bikeMarkers array 
+    doggos.push(doggoMarker);
+  }
+
+  // Create a layer group made from the bike markers array, pass it into the createMap function
+  createMap(L.layerGroup(doggos));
+}
+
+createMarkers();
+  
   
