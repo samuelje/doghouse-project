@@ -7,7 +7,7 @@ var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{
 
 // Initialize all of the LayerGroups we'll be using
 var layers = {
-  adoptable_dogs: new L.LayerGroup(),
+  //adoptable_dogs: new L.LayerGroup(),
   Small_dogs: new L.LayerGroup(),
   Medium_dogs: new L.LayerGroup(),
   large_dogs: new L.LayerGroup(),
@@ -19,7 +19,7 @@ var map = L.map("map-id", {
   center: [37.0902, -95.7129],
   zoom: 5,
   layers: [
-    layers.adoptable_dogs,
+    //layers.adoptable_dogs,
     layers.Small_dogs,
     layers.Medium_dogs,
     layers.large_dogs,
@@ -32,7 +32,7 @@ lightmap.addTo(map);
 
 // Create an overlays object to add to the layer control
 var overlays = {
-  "All adoptable dogs": layers.adoptable_dogs,
+  //"All adoptable dogs": //layers.adoptable_dogs,
   "They're called dogs but are they really dogs?": layers.Small_dogs,
   "Medium dogs": layers.Medium_dogs,
   "Large Dogs": layers.large_dogs,
@@ -60,34 +60,34 @@ L.control.layers(null, overlays, {
 // Initialize an object containing icons for each layer group
 var icons = {
   adoptable_dogs: L.ExtraMarkers.icon({
-    icon: "ion-settings",
+    icon: "ion-ios-paw",
     iconColor: "white",
-    markerColor: "yellow",
-    shape: "star"
+    markerColor: "green",
+    shape: "penta"
   }),
   Small_dogs: L.ExtraMarkers.icon({
-    icon: "ion-android-bicycle",
+    icon: "ion-ios-paw",
     iconColor: "white",
-    markerColor: "red",
-    shape: "circle"
+    markerColor: "yellow",
+    shape: "penta"
   }),
   Medium_dogs: L.ExtraMarkers.icon({
-    icon: "ion-minus-circled",
+    icon: "ion-ios-paw",
     iconColor: "white",
     markerColor: "blue-dark",
     shape: "penta"
   }),
   large_dogs: L.ExtraMarkers.icon({
-    icon: "ion-android-bicycle",
+    icon: "ion-ios-paw",
     iconColor: "white",
     markerColor: "orange",
-    shape: "circle"
+    shape: "penta"
   }),
   XL_dogs: L.ExtraMarkers.icon({
     icon: "ion-ios-paw",
-    iconColor: "black",
+    iconColor: "white",
     markerColor: "blue",
-    shape: "circle"
+    shape: "penta"
   })
 };
 
@@ -99,35 +99,35 @@ var icons = {
     var dogSizes;
 
     // Loop through the stations (they're the same size and have partially matching data)
-    for (var i = 0; i < 1500; i++) {
+    for (var i = 0; i < 2000; i++) {
 
       // Create a new station object with properties of both station objects
       var dog = Object.assign({}, dogLocation[i]);
-      // If a station is listed but not installed, it's coming soon
-      if (dog.properties.size) {
-        dogSizes = "adoptable_dogs";
+      // If dog size 3 = XL large
+      if (dog.properties.size === 3) {
+        dogSizes = "XL_dogs";
       }
-      // If a station has no bikes available, it's empty
+      // If dog size is 2 = large dog
+      else if (dog.properties.size === 2) {
+        dogSizes = "large_dogs";
+      }
+      // If dog size is 1 = to small dog
       else if (dog.properties.size === 1) {
         dogSizes = "Small_dogs";
       }
-      // If a station is installed but isn't renting, it's out of order
+      // If dog size is 0 = to Medium dogs
       else if (dog.properties.size === 0) {
         dogSizes = "Medium_dogs";
       }
-      // If a station has less than 5 bikes, it's status is low
-      else if (dog.properties.size === 2) {
-        dogSizes = "Large_dogs";
-      }
-      // Otherwise the station is normal
-      else {
-        dogSizes = "XL_dogs";
-      }
+      // // Otherwise adoptable dogs
+      // if (dog.properties.size >= 0) {
+      //   dogSizes = "adoptable_dogs";
+      // }
 
       //console.log(dogSizes);
 
       // Create a new marker with the appropriate icon and coordinates
-      var newMarker = L.geoJSON(dog.geometry, {
+      var newMarker = L.marker([dog.properties.Latitude, dog.properties.Longitude], {
         icon: icons[dogSizes]
       });
 
