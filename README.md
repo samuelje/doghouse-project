@@ -31,3 +31,6 @@ for (var i = 0; i < dogLocation.length; i++) {
 for (var i = 0; i < 2000; i++) {
 }
 ```
+# The Doghouse Interactive Map
+
+![Doghouse Map](static/img/final_visual.PNG)
