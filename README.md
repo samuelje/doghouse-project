@@ -14,7 +14,7 @@
 
 ## Prorgramming languages, methods, and tools utilized:
 
-* Python using JupyterNotebook and Pandas to perform API call from Petfinder, load data to dataframe in Pandas, clean data, transform data for Geocoding, load data to PostgreSQL database,
+* Our ETL process utilized Python Pandas in JupyterNotebooks to perform API call from Petfinder, load data to dataframe in Pandas, clean data, transform data for Geocoding, save dataframe in CSV format, convert CSV to geoJSON format, and load data to PostgreSQL database.
 * JavaScript programming using Leaflet to create a map with layers and markers. The markers show a popup with photo for each dog with information related to each dog's name, size, breed, and weblink for Petfinder adoption website.
 
 ### Code Disclaimer
