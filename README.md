@@ -33,4 +33,4 @@ for (var i = 0; i < 2000; i++) {
 ```
 # The Doghouse Interactive Map
 
-![Doghouse Map](static/img/final_visual.PNG)
+![Doghouse Map](static/img/final_visual.png)
