@@ -1,3 +1,0 @@
-gmaps_api_key = 'AIzaSyC3Jo5MpWpqn-UTcwkTNGHXyDWtrGaDsgs'
-petfinder_api_key = 'kWwwtgMTVviv5enMjkxRZJdhEq7hpxzO2uu78ZK6NTizWQtODi'
-petfinder_secret = '2CtvwVDQPR1gtOdorJFA21a5WfhpJChf8SGAdPux' 
