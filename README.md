@@ -17,6 +17,10 @@
 * Our ETL process utilized Python Pandas in JupyterNotebooks to perform API call from Petfinder, load data to dataframe in Pandas, clean data, transform data for Geocoding, save dataframe in CSV format, convert CSV to geoJSON format, and load data to PostgreSQL database.
 * JavaScript programming using Leaflet to create a map with layers and markers. The markers show a popup with photo for each dog with information related to each dog's name, size, breed, and weblink for Petfinder adoption website.
 
+## Presentation
+
+* Please see the Doghouse Project Pres.pdf file in `main` for further details related to this project.
+
 ### Code Disclaimer
 
 * The dataset utilized in this project is very large. The code takes a while to load. The for loop code in line 102 of the **logic_advanced.js** file in the `js` folder within the `static` folder can be edited to test run the data with a smaller portion of the overall data. 
@@ -34,3 +38,4 @@ for (var i = 0; i < 2000; i++) {
 # The Doghouse Interactive Map
 
 ![Doghouse Map](static/img/final_visual.png)
+
