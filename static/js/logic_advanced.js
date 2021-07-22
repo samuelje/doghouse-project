@@ -99,7 +99,7 @@ var icons = {
     var dogSizes;
 
     // Loop through the stations (they're the same size and have partially matching data)
-    for (var i = 0; i < 2000; i++) {
+    for (var i = 0; i < dogLocation.length; i++) {
 
       // Create a new station object with properties of both station objects
       var dog = Object.assign({}, dogLocation[i]);
