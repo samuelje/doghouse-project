@@ -19,7 +19,7 @@
 
 ## Presentation
 
-* Please see the Doghouse Project Pres.pdf file in `main` for further details related to this project.
+* Please see the **Doghouse Project Pres.pdf** file in `main` for further details related to this project.
 
 ### Code Disclaimer
 
